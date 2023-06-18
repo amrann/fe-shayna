@@ -28,23 +28,23 @@
                   <img class="product-big-img" :src="default_img" alt="" />
                 </div>
                 <div class="product-thumbs">
-                    <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
-                      <div class="pt" @click="changeImg(data_dummy[0])" :class="data_dummy[0] == default_img ? 'active' : ''">
-                        <img :src="mickey_1" alt="" />
-                      </div>
+                  <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
+                    <div class="pt" @click="changeImg(data_dummy[0])" :class="data_dummy[0] == default_img ? 'active' : ''">
+                      <img :src="mickey_1" alt="" />
+                    </div>
 
-                      <div class="pt" @click="changeImg(data_dummy[1])" :class="data_dummy[1] == default_img ? 'active' : ''">
-                        <img :src="mickey_2" alt="" />
-                      </div>
+                    <div class="pt" @click="changeImg(data_dummy[1])" :class="data_dummy[1] == default_img ? 'active' : ''">
+                      <img :src="mickey_2" alt="" />
+                    </div>
 
-                      <div class="pt" @click="changeImg(data_dummy[2])" :class="data_dummy[2] == default_img ? 'active' : ''">
-                        <img :src="mickey_3" alt="" />
-                      </div>
+                    <div class="pt" @click="changeImg(data_dummy[2])" :class="data_dummy[2] == default_img ? 'active' : ''">
+                      <img :src="mickey_3" alt="" />
+                    </div>
 
-                      <div class="pt" @click="changeImg(data_dummy[3])" :class="data_dummy[3] == default_img ? 'active' : ''">
-                        <img :src="mickey_4" alt="" />
-                      </div>
-                    </carousel>
+                    <div class="pt" @click="changeImg(data_dummy[3])" :class="data_dummy[3] == default_img ? 'active' : ''">
+                      <img :src="mickey_4" alt="" />
+                    </div>
+                  </carousel>
                 </div>
               </div>
               <div class="col-lg-6">
@@ -112,13 +112,15 @@ export default {
       mickey_1 : require('@/assets/img/mickey1.jpg'),
       mickey_2 : require('@/assets/img/mickey2.jpg'),
       mickey_3 : require('@/assets/img/mickey3.jpg'),
-      mickey_4 : require('@/assets/img/mickey4.jpg')
+      mickey_4 : require('@/assets/img/mickey4.jpg'),
+      idProduct : this.$route.params.id
 
     }
   },
   methods: {
     changeImg(urlImg) {
       this.default_img = urlImg;
+      // console.log(this.idProduct);
     }
   }
 }

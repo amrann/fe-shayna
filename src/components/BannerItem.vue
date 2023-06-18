@@ -14,7 +14,7 @@
                   <li class="w-icon active">
                     <router-link to="/product"><i class="icon_bag_alt"></i></router-link>
                   </li>
-                  <li class="quick-view"><router-link to="/product" >+ Quick View</router-link></li>
+                  <li class="quick-view"><router-link :to="'/product/'+item.id" >+ Quick View</router-link></li>
                 </ul>
               </div>
               <div class="pi-text">
@@ -28,69 +28,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="product-item">
-              <div class="pi-pic">
-                  <img :src="women_2" />
-                  <ul>
-                      <li class="w-icon active">
-                          <a href="#"><i class="icon_bag_alt"></i></a>
-                      </li>
-                      <li class="quick-view"><a href="#">+ Quick View</a></li>
-                  </ul>
-              </div>
-              <div class="pi-text">
-                  <div class="catagory-name">Shoes</div>
-                  <a href="#">
-                      <h5>Guangzhou sweater</h5>
-                  </a>
-                  <div class="product-price">
-                      $13.00
-                  </div>
-              </div>
-            </div>
-            <div class="product-item">
-              <div class="pi-pic">
-                  <img :src="women_3" />
-                  <ul>
-                      <li class="w-icon active">
-                          <a href="#"><i class="icon_bag_alt"></i></a>
-                      </li>
-                      <li class="quick-view"><a href="#">+ Quick View</a></li>
-                  </ul>
-              </div>
-              <div class="pi-text">
-                  <div class="catagory-name">Towel</div>
-                  <a href="#">
-                      <h5>Pure Pineapple</h5>
-                  </a>
-                  <div class="product-price">
-                      $34.00
-                  </div>
-              </div>
-            </div>
-            <div class="product-item">
-              <div class="pi-pic">
-                  <img :src="women_4" />
-                  <ul>
-                      <li class="w-icon active">
-                          <a href="#"><i class="icon_bag_alt"></i></a>
-                      </li>
-                      <li class="quick-view"><a href="#">+ Quick View</a></li>
-                      <li class="w-icon">
-                          <a href="#"><i class="fa fa-random"></i></a>
-                      </li>
-                  </ul>
-              </div>
-              <div class="pi-text">
-                  <div class="catagory-name">Towel</div>
-                  <a href="#">
-                      <h5>Converse Shoes</h5>
-                  </a>
-                  <div class="product-price">
-                      $34.00
-                  </div>
-              </div>
-            </div> -->
           </carousel>
         </div>
         <div class="col-lg-12" v-else>
