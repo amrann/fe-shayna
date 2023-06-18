@@ -27,8 +27,8 @@
                 <div class="product-pic-zoom">
                   <img class="product-big-img" :src="default_img" alt="" />
                 </div>
-                <div class="product-thumbs">
-                  <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
+                <div class="product-thumbs" v-if="product_details.product_galleries.length">
+                  <!-- <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
                     <div class="pt" @click="changeImg(data_dummy[0])" :class="data_dummy[0] == default_img ? 'active' : ''">
                       <img :src="mickey_1" alt="" />
                     </div>
@@ -44,26 +44,29 @@
                     <div class="pt" @click="changeImg(data_dummy[3])" :class="data_dummy[3] == default_img ? 'active' : ''">
                       <img :src="mickey_4" alt="" />
                     </div>
+                  </carousel> -->
+                  <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
+                    <div
+                      v-for="ss in product_details.product_galleries"
+                      :key="ss.id" 
+                      class="pt" 
+                      @click="changeImg(ss.photo)" 
+                      :class="ss.photo == default_img ? 'active' : ''"
+                    >
+                      <img :src="ss.photo" alt="" />
+                    </div>
                   </carousel>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="product-details text-left">
                   <div class="pd-title">
-                    <span>oranges</span>
-                    <h3>Pure Pineapple</h3>
+                    <span>{{product_details.type}}</span>
+                    <h3>{{product_details.name}}</h3>
                   </div>
                   <div class="pd-desc">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, error officia. Rem aperiam laborum voluptatum vel, pariatur modi hic provident eum iure natus quos non a sequi, id accusantium! Autem.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam possimus quisquam animi, commodi, nihil voluptate nostrum neque architecto illo officiis doloremque et corrupti cupiditate voluptatibus error illum. Commodi expedita animi nulla aspernatur.
-                      Id asperiores blanditiis, omnis repudiandae iste inventore cum, quam sint molestiae accusamus voluptates ex tempora illum sit perspiciatis. Nostrum dolor tenetur amet, illo natus magni veniam quia sit nihil dolores.
-                      Commodi ratione distinctio harum voluptatum velit facilis voluptas animi non laudantium, id dolorem atque perferendis enim ducimus? A exercitationem recusandae aliquam quod. Itaque inventore obcaecati, unde quam
-                      impedit praesentium veritatis quis beatae ea atque perferendis voluptates velit architecto?
-                    </p>
-                    <h4>$495.00</h4>
+                    {{product_details.description}}
+                    <h4>${{product_details.price}}</h4>
                   </div>
                   <div class="quantity">
                     <router-link to="/cart" ><a href="shopping-cart.html" class="primary-btn pd-cart">Add To Cart</a> </router-link>
@@ -77,7 +80,7 @@
     </section>
     <!-- Product Shop Section End -->
 
-    <RelatedItem />
+    <RelatedItem /> 
 
 
 		<Footer />
@@ -91,6 +94,7 @@ import RelatedItem from '../components/RelatedItem.vue'
 import Footer from '../components/Footer.vue'
 
 import carousel from 'vue-owl-carousel'
+import axios from 'axios'
 
 export default {
 	name: "home",
@@ -113,14 +117,31 @@ export default {
       mickey_2 : require('@/assets/img/mickey2.jpg'),
       mickey_3 : require('@/assets/img/mickey3.jpg'),
       mickey_4 : require('@/assets/img/mickey4.jpg'),
-      idProduct : this.$route.params.id
+      product_details : []
 
     }
   },
+  mounted() {
+    axios
+    .get("http://103.193.177.167/api/v1/products", {
+      params: {
+        id: this.$route.params.id
+      }
+    })
+    .then(res => {
+      this.product_details = res.data.data
+      this.setDataImg(this.product_details)
+
+    })
+    .catch(err => console.log(err) )
+  },
   methods: {
     changeImg(urlImg) {
-      this.default_img = urlImg;
+      this.default_img = urlImg
       // console.log(this.idProduct);
+    },
+    setDataImg(data) {
+      this.default_img = data.product_galleries[0].photo
     }
   }
 }
