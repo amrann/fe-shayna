@@ -27,7 +27,8 @@
                 <div class="product-pic-zoom">
                   <img class="product-big-img" :src="default_img" alt="" />
                 </div>
-                <div class="product-thumbs" v-if="product_details.product_galleries.length">
+                <!-- <div class="product-thumbs" v-if="product_details.product_galleries?.length >= 0"> -->
+                <div class="product-thumbs" v-if="cekProduct">
                   <!-- <carousel :autoplay="true" :loop="true" :dots="false" :nav="false" class="product-thumbs-track ps-slider">
                     <div class="pt" @click="changeImg(data_dummy[0])" :class="data_dummy[0] == default_img ? 'active' : ''">
                       <img :src="mickey_1" alt="" />
@@ -65,11 +66,12 @@
                     <h3>{{product_details.name}}</h3>
                   </div>
                   <div class="pd-desc">
-                    {{product_details.description}}
+                    <p v-html="product_details.description"></p>
                     <h4>${{product_details.price}}</h4>
                   </div>
                   <div class="quantity">
-                    <router-link to="/cart" ><a href="shopping-cart.html" class="primary-btn pd-cart">Add To Cart</a> </router-link>
+                    <!-- <router-link to="/cart" ><a href="shopping-cart.html" class="primary-btn pd-cart">Add To Cart</a> </router-link> -->
+                    <a @click="saveToKeranjang(product_details.id, product_details.name, product_details.price, product_details.product_galleries[0].photo)" href="#" class="primary-btn pd-cart">Add To Cart</a>
                   </div>
                 </div>
               </div>
@@ -107,21 +109,34 @@ export default {
   data() {
     return {
       default_img : require('@/assets/img/mickey1.jpg'),
-      data_dummy: [
-        require('@/assets/img/mickey1.jpg'),
-        require('@/assets/img/mickey2.jpg'),
-        require('@/assets/img/mickey3.jpg'),
-        require('@/assets/img/mickey4.jpg'),
-      ],
-      mickey_1 : require('@/assets/img/mickey1.jpg'),
-      mickey_2 : require('@/assets/img/mickey2.jpg'),
-      mickey_3 : require('@/assets/img/mickey3.jpg'),
-      mickey_4 : require('@/assets/img/mickey4.jpg'),
-      product_details : []
+      // data_dummy: [
+      //   require('@/assets/img/mickey1.jpg'),
+      //   require('@/assets/img/mickey2.jpg'),
+      //   require('@/assets/img/mickey3.jpg'),
+      //   require('@/assets/img/mickey4.jpg'),
+      // ],
+      // mickey_1 : require('@/assets/img/mickey1.jpg'),
+      // mickey_2 : require('@/assets/img/mickey2.jpg'),
+      // mickey_3 : require('@/assets/img/mickey3.jpg'),
+      // mickey_4 : require('@/assets/img/mickey4.jpg'),
+      product_details : [],
+      keranjang_user : []
 
     }
   },
+  computed : {
+    cekProduct() {
+      return this.product_details.product_galleries && this.product_details.product_galleries.length > 0
+    }
+  },
   mounted() {
+    if (localStorage.getItem('keranjang_user')) {
+      try {
+        this.keranjang_user = JSON.parse(localStorage.getItem('keranjang_user'))
+      } catch (error) {
+        localStorage.removeItem('keranjang_user')
+      }
+    }
     axios
     .get("http://103.193.177.167/api/v1/products", {
       params: {
@@ -142,6 +157,17 @@ export default {
     },
     setDataImg(data) {
       this.default_img = data.product_galleries[0].photo
+    },
+    saveToKeranjang(id, name, price, photo) {
+      var product_stored = {
+        "id" : id,
+        "name" : name,
+        "price" : price,
+        "photo" : photo
+      }
+      this.keranjang_user.push(product_stored)
+      const parsed = JSON.stringify(this.keranjang_user)
+      localStorage.setItem('keranjang_user', parsed)
     }
   }
 }
